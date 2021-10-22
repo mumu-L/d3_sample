@@ -1,0 +1,167 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="../d3.js"></script>
+    <style>
+        #bar{
+             width:400px;
+             height:400px;
+         }
+     </style>
+</head>
+<body>
+    <div id="bar"></div>
+    <script>
+        let dataset = [50,43,120,87,99,160,142] //定义数据
+        let padding = { top:20, right:20, bottom:20, left:60 } //padding
+        let rectStep = 35; //矩形所占的宽度(包括空白)，单位为像素
+        let rectWidth = 30; //矩形所占的宽度(不包括空白)，单位为像素
+
+
+        let { width, height } = [400,400] //绘制图形的宽高
+        let svg = d3.select("#bar")
+            .append("svg")
+            .attr("width",'100%')
+            .attr("height",'100%')
+
+        //x轴宽度
+        let xAxisWidth = 300
+
+        //y轴宽度
+        let yAxisWidth = 300
+
+        //x轴比例尺（序数比例尺）
+
+        let xScale = d3.scaleBand()
+                        .domain(d3.range(dataset.length))
+                        .rangeRound([0,xAxisWidth])
+                        // .paddingInner(1)
+        let max = d3.max(dataset)   
+        console.log(d3.range(max))  
+           
+        //y轴比例尺（线性比例尺）
+        let yScale = d3.scaleLinear()
+                    .domain([0,180])
+                    .range([yAxisWidth,0])
+                    // 
+                    
+
+        
+        //x轴
+        let xAxis = d3.axisBottom(xScale)
+        
+        //重新设置y轴比例尺的值域，与原来的相反
+        // yScale.range([yAxisWidth,0])
+
+        // //y轴
+        let yAxis = d3.axisLeft(yScale)
+                    // .ticks(5)
+        draw()
+        svg.append("g")
+            .attr("class","axis")
+            .attr("transform",`translate(${padding.left},380)`)
+            .call(xAxis)
+        svg.append("g")
+        .attr("transform",`translate(${padding.left},80)`)
+        .call(yAxis)
+        
+        
+        // let rect = svg.selectAll("rect")
+        //     .data(dataset) //绑定数据
+        //     .enter() //获取enter部分
+        //     .append("rect") //添加rect元素，使其与绑定数据一致
+        //     .attr("fill","steelblue") //设置颜色
+        //     .attr("x",(d,i) => padding.left+i*rectStep) //设置矩形x坐标
+        //     .attr("y",(d,i) => 400-padding.bottom-d)
+        //     .attr("width",rectWidth)
+        //     .attr("height",d => d)
+
+        // let text = svg.selectAll("text")
+        // .data(dataset)
+        // .enter()
+        // .append("text")
+        // .attr("fill","white")
+        // .attr("font-size","14px")
+        // .attr("text-anchor","middle")
+        // .attr("x",(d,i) => padding.left+(i*rectStep)) //设置矩形x坐标
+        // .attr("y",d => 400 - padding.bottom - d)
+        // .attr("dx",rectWidth/2) //设置矩形x坐标偏离值
+        // .attr("dy","1em")
+        // .text(d => d)
+
+        function draw(){
+            //获取矩形的update部分
+            let updateRect = svg.selectAll("rect")
+                                .data(dataset)
+            
+            //获取矩形的enter部分
+            let enterRect = updateRect.enter()
+
+            //获取矩形的exit部分
+            let exitRect = updateRect.exit()
+
+            //1.矩形的update部分处理方法
+            updateRect.attr("fill","steelblue")
+                    .attr("x",(d,i) => padding.left+xScale(i)+(xScale.step()/4)) //设置矩形x坐标
+                    .attr("y",(d,i) => 400-padding.bottom-yScale(d))
+                    .attr("width",xScale.step()/2)
+                    .attr("height",d => yScale(d))
+            //2.矩形的enter部分的处理方法
+            enterRect.append("rect")
+                    .attr("fill","steelblue")
+                    .attr("x",(d,i) => padding.left+xScale(i)+(xScale.step()/4)) //设置矩形x坐标
+                    .attr("y",(d,i) => 400-padding.bottom-yScale(d))
+                    .attr("width",xScale.step()/2)
+                    .attr("height",d => yScale(d))
+            //3.矩形的exit部分的处理方法
+            exitRect.remove()
+            //获取文字的update部分
+            let updateText = svg.selectAll("text")
+                                .data(dataset)
+            
+            //获取文字的enter部分
+            let enterText = updateText.enter()
+
+            //获取文字的exit部分
+            let exitText = updateText.exit()
+
+            //1.文字的update部分处理方法
+            updateText.attr("fill","white")
+                    .attr("font-size","14px")
+                    .attr("text-anchor","middle")
+                    .attr("x",(d,i) => padding.left+xScale(i)) //设置矩形x坐标
+                    .attr("y",d => 400 - padding.bottom - yScale(d))
+                    .attr("dx",xScale.step()/2) //设置矩形x坐标偏离值
+                    .attr("dy","1em")
+                    .text(d => d)
+            //2.文字的enter部分的处理方法
+            enterText.append("text")
+                    .attr("fill","white")
+                    .attr("font-size","14px")
+                    .attr("text-anchor","middle")
+                    .attr("x",(d,i) => padding.left+xScale(i)) //设置矩形x坐标
+                    .attr("y",d => 400 - padding.bottom - yScale(d))
+                    .attr("dx",xScale.step()/2) //设置矩形x坐标偏离值
+                    .attr("dy","1em")
+                    .text(d => d)
+            //3.文字的exit部分的处理方法
+            exitText.remove()
+        }
+        function mysort(){
+            dataset.sort(d3.ascending);
+            draw()
+        }
+        function myadd(){
+            dataset.push( Math.floor( Math.random() * 100 ) );
+            draw()
+        }
+        
+    </script>
+</body>
+</html>

@@ -1,0 +1,69 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="../d3.js"></script>
+    <style>
+    </style>
+</head>
+<body>
+
+    <script>
+        // //定义量子化比例尺
+        // let quantize = d3.scaleQuantize()
+
+        //     quantize.domain([50,0])
+        //     .range(["#888","#666","#444","#222","#000"])
+        
+        // //定义圆的半径
+        // let r = [45,35,25,15,5]
+
+        // //给body中添加一个svg元素
+        // let svg = d3.select("body").append("svg")
+        //             .attr("width",400)
+        //             .attr("height",400)
+
+        // //给svg里添加圆
+        // svg.selectAll("circle")
+        //     .data(r)
+        //     .enter()
+        //     .append("circle")
+        //     .attr("cx",(d,i) => 50+i*30)
+        //     .attr("cy",50)
+        //     .attr("r",d => d)
+        //     .attr("fill",d => quantize(d))
+        
+
+        //量子比例尺
+        let quantize = d3.scaleQuantize()
+                        .domain([0,2,4,10])
+                        .range([1,100])
+        //分位比例尺
+        let quantile = d3.scaleQuantile()
+                        .domain([0,2,4,10])
+                        .range([1,100])
+        // console.log(quantize2(0))
+        console.log(quantize(2))
+        // console.log(quantile(0))
+        console.log(quantile(2))
+
+
+        //阈值比例尺
+        let threshold = d3.scaleThreshold()
+                        .domain([10,20,30])
+                        .range(['red','green','blue','black'])
+        console.log(threshold(0))
+        console.log(threshold(5))
+        console.log(threshold(15))
+        console.log(threshold(25))
+        console.log(threshold(35))
+        console.log(threshold(45))
+
+    </script>
+</body>
+</html>

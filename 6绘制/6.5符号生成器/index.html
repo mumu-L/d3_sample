@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="../../d3.js"></script>
+    <!-- <script src="https://cdn.jsdelivr.net/npm/d3-scale-chromatic@3"></script> -->
+    <style>
+        #app {
+            width: 400px;
+            height: 400px;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="app"></div>
+    <script>
+        let svg = d3.select('#app')
+            .append('svg')
+            .attr('width', '100%')
+            .attr('height', '100%')
+
+        let height = 300
+        let dataset = d3.symbols
+        let color = d3.schemeCategory10
+        //
+        let symbol = d3.symbol()
+
+        // dataset.push(d3.symbolCircle)
+        svg.selectAll()
+            .data(dataset)
+            .enter()
+            .append("path")
+            .attr("d", symbol.type(d => d).size(200))
+            // .attr("d", (d, i) => symbol.type(d))
+            .attr("transform", (d, i) => {
+                let x = 100 + i % 5 * 20;
+                let y = 100 + Math.floor(i / 5) * 20
+                return `translate(${x},${y})`
+            })
+            .attr("fill", (d, i) => color[i])
+        // console.log(symbol.type())
+    </script>
+</body>
+
+</html>

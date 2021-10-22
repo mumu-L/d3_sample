@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="../../d3.js"></script>
+    <!-- <script src="https://cdn.jsdelivr.net/npm/d3-scale-chromatic@3"></script> -->
+    <style>
+        #app{
+            width:400px;
+            height:400px;
+        }
+     </style>
+</head>
+<body>
+    <div id="app"></div>
+    <script>
+        let svg = d3.select('#app')
+                    .append('svg')
+                    .attr('width','100%')
+                    .attr('height','100%')
+    
+     let height = 300
+     //
+     let dataset = [{ startAngle:0,endAngle:Math.PI*0.6 },
+                    { startAngle:0.6,endAngle:Math.PI },
+                    { startAngle:Math.PI,endAngle:Math.PI*1.8 },
+                    { startAngle:Math.PI*1.8,endAngle:Math.PI*2 }
+                    ]
+console.log(d3.schemeCategory10)
+    let color = d3.schemeCategory10
+     //创建一个弧生成器
+     let arcPath = d3.arc()
+                     .innerRadius(50)
+                     .outerRadius(100)
+    
+     //添加路径
+    svg.selectAll("path")
+        .data(dataset)
+        .enter()
+        .append("path")
+        .attr("d",d=> arcPath(d))
+        .attr("transform","translate(250,250)")
+        .attr("stroke","black")
+        .attr("stroke-width","3px")
+        .attr("fill",(d,i) => color[i])
+    </script>
+</body>
+</html>

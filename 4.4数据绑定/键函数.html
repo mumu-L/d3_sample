@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="../d3.js"></script>
+</head>
+<body>
+    <p></p>
+    <p></p>
+    <p></p>
+    <script>
+        //数据
+        let persons = [{
+            id:3,name:'张三'
+        },{
+            id:6,name:'李四'
+        },{
+            id:9,name:'王五'
+        }]
+        let p = d3.select("body")
+        .selectAll("p")
+        .data(persons) //绑定
+        .text((d,i) => d.id + ":"+ d.name)
+
+        //更新数据
+        //只有在选择集原来已经绑定有数据的情况下，使用键函数才有效果
+        persons = [{
+            id:6,name:'张三'
+        },{
+            id:9,name:'李四'
+        },{
+            id:3,name:'王五'
+        }]
+        p.data(persons,(d) => d.id)
+        .text((d) => d.id+":"+d.name)
+    </script>
+</body>
+</html>

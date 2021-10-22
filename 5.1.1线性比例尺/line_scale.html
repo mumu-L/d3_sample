@@ -1,0 +1,30 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="../d3.js"></script>
+    <style>
+    </style>
+</head>
+<body>
+
+    <script>
+        let linear = d3.scaleLinear() //创建一个线性比例尺
+                            .domain([0,500]) //定义域
+                            .range([0,120]) //值域
+        console.log(linear(50))
+        console.log(linear(250))
+        console.log(linear(450))
+
+        console.log(linear.invert(80))
+
+        linear.clamp(true)
+        console.log(linear(590))
+    </script>
+</body>
+</html>

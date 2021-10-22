@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="../d3.js"></script>
+</head>
+<body>
+    <p>Fire</p>
+    <p>Water</p>
+    <p>Wind</p>
+    <script>
+        // let paragraphs = document.getElementsByTagName("p");
+        // for(let i = 0; i < paragraphs.length; i++){
+        //     let paragraph = paragraphs.item(i);
+        //     paragraph.innerHTML = "Hello,World"
+        // }
+        let p = d3.select("body")
+        .selectAll("p")
+        .datum(7) //绑定数值7到选择集上 __data__属性
+        .text((d,i) => d+" "+i)
+        console.log(p) 
+        
+    </script>
+</body>
+</html>

@@ -1,0 +1,146 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="../d3.js"></script>
+    <style>
+       #bar{
+            width:400px;
+            height:400px;
+        }
+    </style>
+</head>
+<!-- <body>
+    <p></p>
+    <script>
+        let dataset = [3,6,9]
+        let p = d3.select("body")
+        .selectAll("p")
+        
+        // .text((d,i) => d+" "+i)
+        let update = p.data(dataset) //绑定数据后,分别获取update和enter部分
+        let enter = update.enter()
+
+        //update部分的处理方法是直接修改内容
+        update.text(d => d)
+
+        //enter部分的处理方法是添加元素后再修改内容
+        enter.append("p")
+            .text(d => d)
+        
+    </script>
+</body> -->
+<body>
+
+    <div id="bar"></div>
+    <button onclick="mysort()">排序</button><button onclick="myadd()">增加数据</button>
+    <script>
+        let dataset = [50,43,120,87,99,167,142] //定义数据
+        let padding = { top:20, right:20, bottom:20, left:20 } //padding
+        let rectStep = 35; //矩形所占的宽度(包括空白)，单位为像素
+        let rectWidth = 30; //矩形所占的宽度(不包括空白)，单位为像素
+
+
+        // let { width, height } = [100,400] //绘制图形的宽高
+        let svg = d3.select("#bar")
+            .append("svg")
+            .attr("width",'100%')
+            .attr("height",'100%')
+
+        // let rect = svg.selectAll("rect")
+        //     .data(dataset) //绑定数据
+        //     .enter() //获取enter部分
+        //     .append("rect") //添加rect元素，使其与绑定数据一致
+        //     .attr("fill","steelblue") //设置颜色
+        //     .attr("x",(d,i) => padding.left+i*rectStep) //设置矩形x坐标
+        //     .attr("y",(d,i) => 400-padding.bottom-d)
+        //     .attr("width",rectWidth)
+        //     .attr("height",d => d)
+
+        // let text = svg.selectAll("text")
+        // .data(dataset)
+        // .enter()
+        // .append("text")
+        // .attr("fill","white")
+        // .attr("font-size","14px")
+        // .attr("text-anchor","middle")
+        // .attr("x",(d,i) => padding.left+(i*rectStep)) //设置矩形x坐标
+        // .attr("y",d => 400 - padding.bottom - d)
+        // .attr("dx",rectWidth/2) //设置矩形x坐标偏离值
+        // .attr("dy","1em")
+        // .text(d => d)
+
+        function draw(){
+            //获取矩形的update部分
+            let updateRect = svg.selectAll("rect")
+                                .data(dataset)
+            
+            //获取矩形的enter部分
+            let enterRect = updateRect.enter()
+
+            //获取矩形的exit部分
+            let exitRect = updateRect.exit()
+
+            //1.矩形的update部分处理方法
+            updateRect.attr("fill","steelblue")
+                    .attr("x",(d,i) => padding.left+i*rectStep) //设置矩形x坐标
+                    .attr("y",(d,i) => 400-padding.bottom-d)
+                    .attr("width",rectWidth)
+                    .attr("height",d => d)
+            //2.矩形的enter部分的处理方法
+            enterRect.append("rect")
+                    .attr("fill","steelblue")
+                    .attr("x",(d,i) => padding.left+i*rectStep) //设置矩形x坐标
+                    .attr("y",(d,i) => 400-padding.bottom-d)
+                    .attr("width",rectWidth)
+                    .attr("height",d => d)
+            //3.矩形的exit部分的处理方法
+            exitRect.remove()
+            //获取文字的update部分
+            let updateText = svg.selectAll("text")
+                                .data(dataset)
+            
+            //获取文字的enter部分
+            let enterText = updateText.enter()
+
+            //获取文字的exit部分
+            let exitText = updateText.exit()
+
+            //1.文字的update部分处理方法
+            updateText.attr("fill","white")
+                    .attr("font-size","14px")
+                    .attr("text-anchor","middle")
+                    .attr("x",(d,i) => padding.left+(i*rectStep)) //设置矩形x坐标
+                    .attr("y",d => 400 - padding.bottom - d)
+                    .attr("dx",rectWidth/2) //设置矩形x坐标偏离值
+                    .attr("dy","1em")
+                    .text(d => d)
+            //2.文字的enter部分的处理方法
+            enterText.append("text")
+                    .attr("fill","white")
+                    .attr("font-size","14px")
+                    .attr("text-anchor","middle")
+                    .attr("x",(d,i) => padding.left+(i*rectStep)) //设置矩形x坐标
+                    .attr("y",d => 400 - padding.bottom - d)
+                    .attr("dx",rectWidth/2) //设置矩形x坐标偏离值
+                    .attr("dy","1em")
+                    .text(d => d)
+            //3.文字的exit部分的处理方法
+            exitText.remove()
+        }
+        function mysort(){
+            dataset.sort(d3.ascending);
+            draw()
+        }
+        function myadd(){
+            dataset.push( Math.floor( Math.random() * 100 ) );
+            draw()
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="../d3.js"></script>
+    <style>
+        #scatter{
+             width:400px;
+             height:400px;
+         }
+     </style>
+</head>
+<body>
+    <div id="scatter"></div>
+    <script>
+      let padding = { top:30, right:30, bottom:30, left:30 } //padding
+       //圆心数据
+       let center = [[0.5,0.5,5],[0.7,0.8,30],[0.4,0.9,50],[0.11,0.32,24],[0.88,0.25,21],[0.75,0.12,14],[0.5,0.1,13],[0.2,0.3,18],[0.4,0.1,34],[0.6,0.7,25]]
+
+        //x轴宽度
+       let xAxisWidth = 300
+
+        //y轴宽度
+       let yAxisWidth = 300
+
+       let svg = d3.select("#scatter")
+            .append("svg")
+            .attr("width",'100%')
+            .attr("height",'100%')
+       //x轴比例尺
+       let xScale = d3.scaleLinear([0,xAxisWidth])
+                    .domain([0,1.2*d3.max(center,d=> d[0])])
+       //y轴比例尺
+       let yScale = d3.scaleLinear([0,yAxisWidth])
+                    .domain([1.2*d3.max(center,d=> d[1]),0])
+ 
+       //绘制圆
+       let cirlce = svg.selectAll('circle')
+                        .data(center)
+                        .enter() //获取enter部分
+                        .append('circle') //添加circle元素
+                        .attr('fill','black') //设置颜色
+                        .attr('cx', d =>  padding.left+xScale(d[0]))
+                        .attr('cy',d => 400-padding.bottom-yScale(d[1]))
+                        .attr('r', d => d[2]*0.5)
+        xAxis = d3.axisBottom(xScale)
+        yAxis = d3.axisLeft(yScale)
+
+        svg.append('g')
+        .attr('transform',`translate(${padding.bottom},${400 - padding.bottom})`)
+        .call(xAxis)
+        svg.append('g')
+        .attr('transform',`translate(${padding.left},${100 - padding.left})`)
+        .call(yAxis)
+    </script>
+</body>
+</html>

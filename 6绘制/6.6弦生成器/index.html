@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="../../d3.js"></script>
+    <!-- <script src="https://cdn.jsdelivr.net/npm/d3-scale-chromatic@3"></script> -->
+    <style>
+        #app {
+            width: 400px;
+            height: 400px;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="app"></div>
+    <script>
+        let svg = d3.select('#app')
+            .append('svg')
+            .attr('width', '100%')
+            .attr('height', '100%')
+
+        let height = 300
+        let dataset = {
+            source: {
+                startAngle: 0.2,
+                endAngle: Math.PI * 0.3,
+                radius: 100
+            },
+            target: {
+                startAngle: Math.PI,
+                endAngle: Math.PI * 1.6,
+                radius: 100
+            }
+        }
+        //创建一个弦生成器
+        let ribbon = d3.ribbon()
+        // .source(d => d.source)
+        // .target(d => d.target)
+        // .radius(100)
+        // .startAngle(d => d.startAngle)
+        // .endAngle(d => d.endAngle)
+
+        //添加路径
+        svg.append("path")
+            .attr("d", ribbon(dataset))
+            .attr("transform", `translate(200,200)`)
+            .attr("fill", "yellow")
+            .attr("stroke", "black")
+            .attr("stroke-width", 3)
+    </script>
+</body>
+
+</html>

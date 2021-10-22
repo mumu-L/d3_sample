@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="../../d3.js"></script>
+    <!-- <script src="https://cdn.jsdelivr.net/npm/d3-scale-chromatic@3"></script> -->
+    <style>
+        #app {
+            width: 400px;
+            height: 400px;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="app"></div>
+    <script>
+        let svg = d3.select('#app')
+            .append('svg')
+            .attr('width', '100%')
+            .attr('height', '100%')
+        let height = 300
+
+        let dataset = [{
+            country: "china",
+            gdp: [],
+
+        }, {
+            country: "japan",
+            gdp: []
+        }]
+        for (let i=0;i<14;i++) { //生成数据
+            // console.log(i)
+            dataset[0].gdp.push([2000 + i, Math.floor(Math.random() * 10000)])
+            dataset[1].gdp.push([2000 + i, Math.floor(Math.random() * 10000)])
+        }
+   
+        //外边框
+        let padding = {
+            top: 50,
+            right: 50,
+            bottom: 50,
+            left: 50
+        }
+
+        //计算GDP的最大值
+        let gdpmax = 0
+        for (let i = 0; i < dataset.length; i++) {
+            let currGdp = d3.max(dataset[i].gdp, (d) => d[1])
+            if (currGdp > gdpmax) {
+                gdpmax = currGdp
+            }
+        }
+
+        //定义x轴比例尺
+        let xScale = d3.scaleLinear()
+            .domain([2000, 2013])
+            .range([0, 400 - padding.left - padding.right])
+        //定义y轴比例尺
+        let yScale = d3.scaleLinear()
+            .domain([gdpmax * 1.1,0])
+            .range([400 - padding.top - padding.bottom, 0])
+
+        //创建一个直线生成器
+        let linePath = d3.line()
+            .x(d => xScale(d[0]))
+            .y(d => yScale(d[1]))
+        //定义两个颜色
+        let colors = [d3.rgb(0, 0, 255), d3.rgb(0, 255, 0)]
+
+        //添加路径
+        svg.selectAll("path")
+            .data(dataset)
+            .enter()
+            .append("path")
+            .attr("transform", `translate(${padding.left},${padding.top})`)
+            .attr("d", d => linePath(d.gdp))
+            .attr("fill", "none")
+            .attr("stroke-width", 3)
+            .attr("stroke", (d, i) => colors[i])
+        
+        //x轴
+        let xAxis = d3.axisBottom(xScale)
+                    .ticks(5)
+                    .tickFormat(d3.format("d"))
+        //y轴
+        let yAxis = d3.axisLeft(yScale)
+                    // .ticks(5)
+                    // .tickFormat(d3.format("d"))
+
+        //添加一个<g> 元素用于放x轴
+            svg.append("g")
+            .attr("class","axis")
+            .attr("transform",`translate(${padding.left},350)`)
+            .call(xAxis)
+
+        //添加一个<g> 元素用于放x轴
+            svg.append("g")
+            .attr("class","axis")
+            .attr("transform",`translate(${padding.left},${padding.top})`)
+            .call(yAxis)
+    </script>
+</body>
+
+</html>
